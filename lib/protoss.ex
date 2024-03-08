@@ -93,8 +93,8 @@ defmodule Protoss do
               Protoss._empty_function(fun, length(params) - 1)
           end)
 
-        suppress_callbacks = 
-          Enum.map(unquote(after_callbacks), fn 
+        suppress_callbacks =
+          Enum.map(unquote(after_callbacks), fn
             {fun, param_count} ->
               Protoss._empty_function(fun, param_count)
           end)
@@ -129,8 +129,9 @@ defmodule Protoss do
   defp scan_callbacks(ast) do
     {_, cbs} =
       Macro.prewalk(ast, [], fn
-        {:@, _, [{:callback, _, [{:"::", _ , [{name, _, count} | _]}]}]}, so_far ->
+        {:@, _, [{:callback, _, [{:"::", _, [{name, _, count} | _]}]}]}, so_far ->
           {ast, [{name, length(count)} | so_far]}
+
         ast, so_far ->
           {ast, so_far}
       end)
