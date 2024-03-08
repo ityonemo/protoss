@@ -8,7 +8,7 @@ the protocol and the module you're implementing for, colocating
 the code in the module you're writing *just makes sense*.  This
 library does this automatically for you.
 
-> ### Work in progess {: .warning }
+> ### Work in progress
 >
 > This library is a work in progress.  For example it's not
 > decided how to interact these features with non-struct protocol
@@ -22,12 +22,15 @@ library does this automatically for you.
 use Protoss
 
 defprotocol MyProtocol do
+  # this works like a normal protocol forward definition.
   def fun_must_be_implemented(argument)
 
   # delegations forward to the passed module.  Currently
-  # this is not runtime-checked, but it will be in the future.
+  # this is not currently runtime-checked, but it will be 
+  # in the future under a flag.
   #
-  # MyProtocol.from_json(MyStruct, ...)
+  # call as:
+  # `MyProtocol.from_json(MyStruct, ...)`
   #
   defdelegate from_json(module, argument)
 
@@ -38,7 +41,7 @@ after
   # extra callbacks:
   @callback extra_callback() :: term
 
-  # this can be called directly as: MyProtocol.root_function()
+  # this can be called directly as: `MyProtocol.root_function()`
   def root_function() do
     :ok
   end
