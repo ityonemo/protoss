@@ -7,7 +7,8 @@ defmodule Protoss.MixProject do
       version: "0.1.0",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package()
     ]
   end
 
@@ -15,6 +16,19 @@ defmodule Protoss.MixProject do
   def application do
     [
       extra_applications: [:logger]
+    ]
+  end
+  
+  @source_url "https://github.com/ityonemo/protoss"
+
+  defp package do
+    [
+      description: "Protoss is an evil, powerful Protocol library.",
+      licenses: ["MIT"],
+      files: ~w[lib .formatter.exs mix.exs README.md LICENSE.md],
+      links: %{
+        "GitHub" => @source_url
+      }
     ]
   end
 
