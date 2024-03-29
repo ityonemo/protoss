@@ -4,6 +4,7 @@ defprotocol AfterDefHeader do
   def fun(s)
 after
   def add(a, b \\ 47)
+
   def add(a, b) do
     a + b
   end
