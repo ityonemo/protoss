@@ -104,6 +104,7 @@ defmodule Protoss do
             unquote(delegates)
             # here we need to suppress callbacks that were declared as a part of basic protocols
             unquote(suppress_delegations)
+            unquote(suppress_callbacks)
           end
         end
       end
