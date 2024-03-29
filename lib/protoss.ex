@@ -69,6 +69,7 @@ defmodule Protoss do
     after_callbacks = Module.get_attribute(module, :__protoss_after_callbacks__)
 
     quote do
+      import Protocol, only: []
       import Kernel
 
       unquote_splicing(module_delegations_callbacks)
