@@ -4,6 +4,8 @@ defprotocol Specs do
   @spec proto_fun(t) :: t
   def proto_fun(s)
 
+  def unspeced_proto(abc, qqq)
+
   @spec delegation_fun(module, integer) :: integer
   defdelegate delegation_fun(module, integer)
 
