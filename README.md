@@ -1,6 +1,6 @@
 # Protoss
 
-![tests](https://github.com/github/docs/actions/workflows/basic-workflow.yml/badge.svg)
+![tests](https://github.com/ityonemo/protoss/actions/workflows/basic-workflow.yml/badge.svg)
 
 Evil and Powerful Protocols for Elixir
 
