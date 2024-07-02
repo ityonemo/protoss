@@ -8,12 +8,6 @@ the protocol and the module you're implementing for, colocating
 the code in the module you're writing *just makes sense*.  This
 library does this automatically for you.
 
-> ### Work in progress
->
-> This library is a work in progress.  For example it's not
-> decided how to interact these features with non-struct protocol
-> usage.
-
 ## Usage
 
 ### Protocol definition
@@ -42,7 +36,7 @@ after
   @callback extra_callback() :: term
 
   # this can be called directly as: `MyProtocol.root_function()`
-  def root_function() do
+  def root_function do
     :ok
   end
 end
@@ -67,9 +61,15 @@ defmodule MyStruct do
   def from_json(%{"value" => value}), do: %__MODULE__{value: value}
 
   @impl MyProtocol
-  def extra_callback(), do: "I was required to implement this"
+  def extra_callback, do: "I was required to implement this"
 end
 ```
+
+### Formatter changes
+
+In order to get proper formatting, you should add the following option to your `.formatter.exs`
+
+`locals_without_parens: [defdelegate: 1]`
 
 ## Installation
 
@@ -79,7 +79,7 @@ list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:protoss, "~> 0.1.0"}
+    {:protoss, "~> 0.2"}
   ]
 end
 ```
