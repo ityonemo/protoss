@@ -43,5 +43,7 @@ jobs:
         restore-keys: ${{ runner.os }}-${{ matrix.version.elixir }}-${{ matrix.version.otp }}-mix-
     - name: Install dependencies
       run: mix deps.get
+    - name: Compile
+      run: mix compile --errors-as-warnings
     - name: Run tests
       run: mix test
