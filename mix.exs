@@ -8,6 +8,7 @@ defmodule Protoss.MixProject do
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      docs: docs(),
       package: package(),
       elixirc_paths: elixirc_paths(Mix.env())
     ]
@@ -40,4 +41,12 @@ defmodule Protoss.MixProject do
       {:ex_doc, "~> 0.31", only: :dev}
     ]
   end
+
+    defp docs do
+      [
+        main: "Protoss",
+        extras: ["README.md"]
+      ]
+    end
+  
 end

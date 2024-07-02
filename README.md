@@ -1,5 +1,7 @@
 # Protoss
 
+![tests](https://github.com/github/docs/actions/workflows/basic-workflow.yml/badge.svg)
+
 Evil and Powerful Protocols for Elixir
 
 Protocols are just modules!  And sometimes you just want to do
