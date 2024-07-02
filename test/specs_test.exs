@@ -7,9 +7,9 @@ defmodule SpecsTest do
 
   test "proto_fun specs assigned correctly inside the protocol", specs do
     assert [
-              {:type, _, :fun,
-               [{:type, _, :product, [{:user_type, _, :t, []}]}, {:user_type, _, :t, []}]}
-            ] = Map.fetch!(specs, {:proto_fun, 1})
+             {:type, _, :fun,
+              [{:type, _, :product, [{:user_type, _, :t, []}]}, {:user_type, _, :t, []}]}
+           ] = Map.fetch!(specs, {:proto_fun, 1})
   end
 
   test "unspecced protocol function is not in the specs", specs do
@@ -18,9 +18,12 @@ defmodule SpecsTest do
 
   test "delegation specs assigned correctly inside the protocol", specs do
     assert [
-              {:type, _, :fun,
-               [{:type, _, :product, [{:type, _, :module, []}, {:type, _, :integer, _}]}, {:type, _, :integer, []}]}
-            ] = Map.fetch!(specs, {:delegation_fun, 2})
+             {:type, _, :fun,
+              [
+                {:type, _, :product, [{:type, _, :module, []}, {:type, _, :integer, _}]},
+                {:type, _, :integer, []}
+              ]}
+           ] = Map.fetch!(specs, {:delegation_fun, 2})
   end
 
   test "unspecced delegation function is not in the specs", specs do

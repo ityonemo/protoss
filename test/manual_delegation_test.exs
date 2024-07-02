@@ -2,7 +2,7 @@ use Protoss
 
 defprotocol ManualDelegated do
   def fun(s)
-  defdelegate(add(a, b))
+  defdelegate add(a, b)
 end
 
 defmodule ManualDelegationModule do
@@ -16,6 +16,10 @@ end
 
 defmodule DelegationTest do
   use ExUnit.Case, async: true
+
+  test "the module has the appropriate behaviour" do
+    assert [ManualDelegated] = ManualDelegationModule.module_info(:attributes)[:behaviour]
+  end
 
   test "basic delegation occurs" do
     assert 47 = ManualDelegated.fun(%ManualDelegationModule{})
