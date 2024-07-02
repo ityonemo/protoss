@@ -1,4 +1,100 @@
 defmodule Protoss do
+  @moduledoc """
+  Protoss is a utility library that allows you to define protocols implementations
+  which automatically delegate back to the module that is the caller of the protocol.
+
+  ### Automatic delegation of protocol functions
+
+  The primary purpose of `Protoss` is to automatically delegate protocol functions.
+  As an example, here is standard elixir code for implementing a protocol:
+
+  ```elixir
+  defprotocol Proto do
+    def unwrap(term)
+  end
+
+  defmodule MyStruct do
+    defstruct [:value]
+    defimpl Proto do
+      def unwrap(term), do: term.value
+    end
+  end
+  ```
+
+  Protoss makes this easier to understand by hiding the `defimpl` boilerplate module.
+  This is a natural fit for Elixir's convention of having module functions whose
+  first parameter is the module's datatype.
+
+  ```elixir
+  use Protoss
+  defprotocol Proto do
+    def unwrap(term)
+  end
+
+  defmodule MyStruct do
+    use Proto
+    defstruct [:value]
+    def unwrap(term), do: term.value
+  end
+  ```
+
+  ### Directly delegated functions.
+
+  Protoss also allows you to define functions that get directly delegated to the
+  implementation module, that are then logically associated with the protocol, and
+  whose existence is checked by the compiler using the protocol behaviour.
+
+  A common use case would be a `from_json` function which reifies json data into a
+  struct.
+
+  #### Example:
+
+  ```elixir
+  use Protoss
+  defprotocol Proto do
+    def unwrap(term)
+    defdelegate from_json(module, json)
+  end
+
+  defmodule MyStruct do
+    use Proto
+    defstruct [:value]
+    def unwrap(term), do: term.value
+
+    # NOTE the arity of the function
+    def from_json(%{"value" => v}), do: %__MODULE__{value: v}
+  end
+  ```
+
+  ### Protocol body functions
+
+  Finally, protoss allows you to write arbitrary functions in the protocol body
+  that aren't necessarily part of the protocol itself, using the `after` keyword.  
+  This could be useful to reduce code duplication if you have a common processing 
+  step that must occur in conjunction with a pseudo-private protocol function, 
+  or even if you simply have a thematically relevant function that you would like 
+  to incorporate  into the same namespace.
+
+  ```elixir
+  use Protoss
+  defprotocol Proto do
+    def _unwrap_impl(term)
+  after
+    def unwrap(struct) do
+      struct
+      |> _unwrap_impl()
+      |> SomeOtherModule.process()
+    end
+  end
+
+  defmodule MyStruct do
+    use Proto
+    defstruct [:value]
+    def _unwrap_impl(term), do: term.value
+  end
+  ```
+  """
+
   defmacro __using__(_) do
     quote do
       import Kernel, except: [defprotocol: 2]
