@@ -50,18 +50,37 @@ defmodule Protoss do
         end
       end)
 
-    module_delegations_callbacks =
-      Enum.map(delegations.module, fn {name, params} ->
-        params_types =
-          List.duplicate(
-            quote do
-              term()
-            end,
-            length(params) - 1
-          )
+    specs = Module.get_attribute(module, :spec)
 
-        quote do
-          @callback unquote(name)(unquote_splicing(params_types)) :: term()
+    module_delegations_callbacks =
+      Enum.map(delegations.module, fn {name, delegation_params} ->
+        spec = Enum.flat_map(specs, fn 
+          {:spec, {:"::", _, [{^name, _, spec_params} | _]} = spec_ast, _} 
+            when length(spec_params) == length(delegation_params) -> [spec_ast]
+          _ -> []
+        end)
+
+        case spec do
+          [] ->
+
+            params_types =
+              List.duplicate(
+                quote do
+                  term()
+                end,
+                length(delegation_params) - 1
+              )
+    
+            quote do
+              @callback unquote(name)(unquote_splicing(params_types)) :: term()
+            end
+          specs ->
+            Enum.map(specs, fn {:"::", meta1, [{^name, meta2, spec_params} | rest]} ->
+              new_callback = {:"::", meta1, [{name, meta2, tl(spec_params)} | rest]}
+              quote do
+                @callback unquote(new_callback)
+              end
+            end)
         end
       end)
 

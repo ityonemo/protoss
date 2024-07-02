@@ -1,20 +1,27 @@
 defmodule SpecsTest do
   use ExUnit.Case, async: true
 
-  test "spces assigned correctly inside the protocol" do
-    assert {:ok, specs} = Code.Typespec.fetch_specs(Specs)
-
-    assert {_,
-            [
-              {:type, _, :fun,
-               [{:type, _, :product, [{:user_type, _, :t, []}]}, {:user_type, _, :t, []}]}
-            ]} = List.keyfind(specs, {:foo, 1}, 0)
+  setup do
+    Code.Typespec.fetch_specs(Specs)
   end
 
-  test "spces assigned correctly outside the protocol" do
-    assert {:ok, specs} = Code.Typespec.fetch_specs(Specs)
+  test "proto_fun specs assigned correctly inside the protocol", specs do
+    assert [
+              {:type, _, :fun,
+               [{:type, _, :product, [{:user_type, _, :t, []}]}, {:user_type, _, :t, []}]}
+            ] = Map.fetch!(specs, {:proto_fun, 1})
+  end
 
-    assert {_, [{:type, _, :fun, [{:type, _, :product, []}, {:type, _, :integer, []}]}]} =
-             List.keyfind(specs, {:bar, 0}, 0)
+  test "delegation specs assigned correctly inside the protocol", specs do
+    assert [
+              {:type, _, :fun,
+               [{:type, _, :product, [{:user_type, _, :t, []}]}, {:user_type, _, :t, []}]}
+            ] = Map.fetch!(specs, {:delegation_fun, 1})
+  end
+
+
+  test "specs assigned correctly outside the protocol", specs do
+    assert [{:type, _, :fun, [{:type, _, :product, []}, {:type, _, :integer, []}]}] =
+             Map.fetch!(specs, {:body_fun, 0})
   end
 end
