@@ -18,13 +18,14 @@ jobs:
   build:
     strategy:
       matrix:
-        version:
+        elixir: ['1.17.1', '1.16.3', '1.15.8']
+        include: 
           - elixir: '1.17.1'
             otp: '27.0'
           - elixir: '1.16.3'
             otp: '26.2'
           - elixir: '1.15.8'
-            ottp: '25.3'
+            otp: '25.3'
     name: Build and test
     runs-on: ubuntu-latest
     steps:
@@ -32,8 +33,8 @@ jobs:
     - name: Set up Elixir
       uses: erlef/setup-beam@61e01a43a562a89bfc54c7f9a378ff67b03e4a21 # v1.16.0
       with:
-        elixir-version: ${{ matrix.version.elixir }} # [Required] Define the Elixir version
-        otp-version: ${{ matrix.version.otp }}      # [Required] Define the Erlang/OTP version
+        elixir-version: ${{ matrix.elixir }} # [Required] Define the Elixir version
+        otp-version: ${{ matrix.otp }}      # [Required] Define the Erlang/OTP version
     - name: Restore dependencies cache
       uses: actions/cache@v3
       with:
