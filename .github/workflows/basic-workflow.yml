@@ -18,13 +18,15 @@ jobs:
   build:
     strategy:
       matrix:
-        elixir: ['1.17.1', '1.16.3', '1.15.8']
+        elixir: ['1.17.1', '1.16.3', '1.15.8', '1.14.5']
         include: 
           - elixir: '1.17.1'
             otp: '27.0'
           - elixir: '1.16.3'
             otp: '26.2'
           - elixir: '1.15.8'
+            otp: '25.3'
+          - elixir: '1.14.5'
             otp: '25.3'
     name: Build and test
     runs-on: ubuntu-latest
