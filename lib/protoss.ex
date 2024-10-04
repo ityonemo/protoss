@@ -69,10 +69,10 @@ defmodule Protoss do
   ### Protocol body functions
 
   Finally, protoss allows you to write arbitrary functions in the protocol body
-  that aren't necessarily part of the protocol itself, using the `after` keyword.  
-  This could be useful to reduce code duplication if you have a common processing 
-  step that must occur in conjunction with a pseudo-private protocol function, 
-  or even if you simply have a thematically relevant function that you would like 
+  that aren't necessarily part of the protocol itself, using the `after` keyword.
+  This could be useful to reduce code duplication if you have a common processing
+  step that must occur in conjunction with a pseudo-private protocol function,
+  or even if you simply have a thematically relevant function that you would like
   to incorporate  into the same namespace.
 
   ```elixir
@@ -252,7 +252,7 @@ defmodule Protoss do
   defp scan_callbacks(ast) do
     {_, cbs} =
       Macro.prewalk(ast, [], fn
-        {:@, _, [{:callback, _, [{:"::", _, [{name, _, count} | _]}]}]}, so_far ->
+        {:@, _, [{:callback, _, [{:"::", _, [{name, _, count} | _]}]}]} = ast, so_far ->
           {ast, [{name, length(count)} | so_far]}
 
         ast, so_far ->
